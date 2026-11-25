@@ -36,4 +36,4 @@ class LecturaConsumo(models.Model):
 
     def __str__(self):
         origen = "SIM" if self.es_simulado else "ESP32"
-        return f"[{origen}] {self.watts_totales}W -> ${self.costo_clp:.2f} CLP ({self.fecha_hora:%H:%M:%S})"git a
+        return f"[{origen}] {self.watts_totales}W -> ${self.costo_clp:.2f} CLP ({self.fecha_hora:%H:%M:%S})"
