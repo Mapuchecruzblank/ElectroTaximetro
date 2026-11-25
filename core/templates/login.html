@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | ElectroTaximetro</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container center-screen">
+        <div class="card" style="width: 100%;">
+            <h2>⚡ ElectroTaximetro</h2>
+            <p>Ingresa a tu panel de monitoreo</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-full">Entrar</button>
+            </form>
+            <div class="form-footer">
+                <a href="{% url 'registro' %}">Crear cuenta</a>
+                <a href="{% url 'landing' %}">← Sitio Web</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
