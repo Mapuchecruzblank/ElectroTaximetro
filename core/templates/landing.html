@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroTaximetro | Control de Consumo Eléctrico</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="logo">⚡ ElectroTaximetro</span>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-sm">Ir a la App</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-sm">Ingresar</a>
+            {% endif %}
+        </header>
+
+        <section style="margin-bottom: 28px;">
+            <h1>Controla tu gasto eléctrico en pesos chilenos en tiempo real</h1>
+            <p>Monitorea cada electrodoméstico de tu hogar, simula consumos y evita sorpresas a fin de mes. Arquitectura preparada para telemetría IoT con <strong>ESP32 + sensor SCT-013</strong>.</p>
+            <a href="{% url 'dashboard' %}" class="btn btn-full">Abrir Aplicación Móvil</a>
+        </section>
+
+        <div class="card">
+            <h2> Taxímetro en Vivo ($ CLP)</h2>
+            <p>Traduce Watts y kWh directamente a dinero real según tarifa eléctrica ($135 CLP/kWh por defecto) segundo a segundo.</p>
+        </div>
+
+        <div class="card">
+            <h2> Gestión y Simulación</h2>
+            <p>Agrega tus artefactos (hervidor, televisor, refrigerador), enciéndelos o apágalos en la app para proyectar su impacto en tu boleta.</p>
+        </div>
+
+        <div class="card">
+            <h2> Listo para Hardware ESP32</h2>
+            <p>Conecta una pinza amperimétrica no invasiva SCT-013 al tablero eléctrico para reemplazar la simulación por mediciones reales vía Wi-Fi.</p>
+        </div>
+    </div>
+</body>
+</html>

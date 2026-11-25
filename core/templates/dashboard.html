@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App | ElectroTaximetro</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="logo"> Hola, {{ user.username }}</span>
+            <div style="display:flex; gap:14px; align-items:center;">
+                <a href="{% url 'landing' %}"> Sitio Web</a>
+                <form action="{% url 'logout' %}" method="post" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-link">Salir</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>Configuración Actual</h2>
+            <p>Tarifa: <strong>${{ perfil.tarifa_kwh_clp }} CLP / kWh</strong></p>
+            <p>Presupuesto mensual: <strong>${{ perfil.presupuesto_mensual_clp }} CLP</strong></p>
+        </div>
+    </div>
+</body>
+</html>
