@@ -147,3 +147,120 @@ form input:focus {
     justify-content: space-between;
     align-items: center;
 }
+/* Dashboard: Header, Taxímetro, Formulario y Lista */
+.header-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.form-inline {
+    margin: 0;
+}
+
+.taximetro-card {
+    text-align: center;
+    border-color: #22c55e;
+}
+
+.taximetro-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.taximetro-monto {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #22c55e;
+    margin: 4px 0;
+}
+
+.taximetro-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.speed-controls {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-speed {
+    background: #1f3328;
+    color: #86efac;
+}
+
+.btn-speed.active {
+    background: #22c55e;
+    color: #052e16;
+}
+
+.btn-reset {
+    background: #3f1d1d;
+    color: #fca5a5;
+}
+
+.form-add-device {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.input-device-name {
+    flex: 2;
+    min-width: 140px;
+    margin: 0;
+}
+
+.input-device-watts {
+    flex: 1;
+    min-width: 100px;
+    margin: 0;
+}
+
+.device-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #1f3328;
+}
+
+.device-watts {
+    font-size: 0.82rem;
+    color: #86efac;
+}
+
+.device-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.disp-nombre-on {
+    color: #f0fdf4;
+}
+
+.disp-nombre-off {
+    color: #64748b;
+}
+
+.btn-on {
+    background: #22c55e;
+    color: #052e16;
+}
+
+.btn-off {
+    background: #1e293b;
+    color: #94a3b8;
+}
+
+.empty-msg {
+    font-size: 0.88rem;
+    color: #86efac;
+}

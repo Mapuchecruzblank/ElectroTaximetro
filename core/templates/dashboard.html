@@ -6,25 +6,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App | ElectroTaximetro</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <span class="logo"> Hola, {{ user.username }}</span>
-            <div style="display:flex; gap:14px; align-items:center;">
-                <a href="{% url 'landing' %}"> Sitio Web</a>
-                <form action="{% url 'logout' %}" method="post" style="margin:0;">
+            <span class="logo">⚡ {{ user.username }}</span>
+            <div class="header-actions">
+                <a href="{% url 'landing' %}"> Web</a>
+                <form action="{% url 'logout' %}" method="post" class="form-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn-link">Salir</button>
                 </form>
             </div>
         </header>
 
+        <!-- TAXÍMETRO EN VIVO -->
+        <div class="card taximetro-card">
+            <p class="taximetro-label">Costo Acumulado (Simulado)</p>
+            <div id="costo-clp" class="taximetro-monto">$0.00</div>
+            <div class="taximetro-stats">
+                <div>⏱ <strong id="cronometro">00:00:00</strong></div>
+                <div>⚡ <strong id="watts-totales">{{ watts_activos }}</strong> W</div>
+            </div>
+            <div class="speed-controls">
+                <button type="button" class="btn btn-sm btn-speed active" onclick="setVelocidad(1)" id="btn-x1">1x Real</button>
+                <button type="button" class="btn btn-sm btn-speed" onclick="setVelocidad(60)" id="btn-x60">60x (1m/s)</button>
+                <button type="button" class="btn btn-sm btn-speed" onclick="setVelocidad(3600)" id="btn-x3600">3600x (1h/s)</button>
+                <button type="button" class="btn btn-sm btn-reset" onclick="reiniciarTaximetro()">↺</button>
+            </div>
+        </div>
+
+        <!-- GRÁFICO EN TIEMPO REAL -->
         <div class="card">
-            <h2>Configuración Actual</h2>
-            <p>Tarifa: <strong>${{ perfil.tarifa_kwh_clp }} CLP / kWh</strong></p>
-            <p>Presupuesto mensual: <strong>${{ perfil.presupuesto_mensual_clp }} CLP</strong></p>
+            <h2>Consumo en Tiempo Real (W)</h2>
+            <canvas id="graficoConsumo" height="140"></canvas>
+        </div>
+
+        <!-- AGREGAR ELECTRODOMÉSTICO -->
+        <div class="card">
+            <h2>+ Agregar Electrodoméstico</h2>
+            <form method="post" class="form-add-device">
+                {% csrf_token %}
+                <input type="text" name="nombre" placeholder="Ej: Hervidor, TV, Refri" required class="input-device-name">
+                <input type="number" name="watts" placeholder="Watts (ej: 2000)" step="1" min="1" required class="input-device-watts">
+                <button type="submit" class="btn btn-full">Agregar y Encender</button>
+            </form>
+        </div>
+
+        <!-- LISTA DE DISPOSITIVOS -->
+        <div class="card">
+            <h2>Mis Artefactos ({{ dispositivos.count }})</h2>
+            {% for d in dispositivos %}
+                <div class="device-item">
+                    <div>
+                        <strong class="{% if d.encendido %}disp-nombre-on{% else %}disp-nombre-off{% endif %}">{{ d.nombre }}</strong>
+                        <div class="device-watts">{{ d.watts_promedio }} W</div>
+                    </div>
+                    <div class="device-actions">
+                        <form action="{% url 'toggle_dispositivo' d.id %}" method="post" class="form-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm {% if d.encendido %}btn-on{% else %}btn-off{% endif %}">
+                                {% if d.encendido %}ON{% else %}OFF{% endif %}
+                            </button>
+                        </form>
+                        <form action="{% url 'eliminar_dispositivo' d.id %}" method="post" class="form-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-link" title="Eliminar">✕</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-msg">Aún no tienes artefactos. Agrega un hervidor (2000W) o refrigerador (150W) arriba.</p>
+            {% endfor %}
         </div>
     </div>
+
+    <script>
+        const wattsActivos = parseFloat("{{ watts_activos }}".replace(',', '.')) || 0;
+        const tarifaKwh = parseFloat("{{ perfil.tarifa_kwh_clp }}".replace(',', '.')) || 135;
+
+        let segundosSimulados = 0;
+        let costoAcumulado = 0;
+        let velocidad = 1;
+
+        const ctx = document.getElementById('graficoConsumo').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0s'],
+                datasets: [{
+                    label: 'Potencia (W)',
+                    data: [wattsActivos],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: '#86efac', maxTicksLimit: 6 }, grid: { color: '#1f3328' } },
+                    y: { beginAtZero: true, ticks: { color: '#86efac' }, grid: { color: '#1f3328' } }
+                }
+            }
+        });
+
+        function formatearTiempo(seg) {
+            const h = String(Math.floor(seg / 3600)).padStart(2, '0');
+            const m = String(Math.floor((seg % 3600) / 60)).padStart(2, '0');
+            const s = String(Math.floor(seg % 60)).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function setVelocidad(v) {
+            velocidad = v;
+            ['btn-x1', 'btn-x60', 'btn-x3600'].forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            document.getElementById('btn-x' + v).classList.add('active');
+        }
+
+        function reiniciarTaximetro() {
+            segundosSimulados = 0;
+            costoAcumulado = 0;
+            document.getElementById('cronometro').textContent = '00:00:00';
+            document.getElementById('costo-clp').textContent = '$0.00';
+        }
+
+        setInterval(() => {
+            if (wattsActivos > 0) {
+                segundosSimulados += velocidad;
+                const kwhIntervalo = (wattsActivos / 1000) * (velocidad / 3600);
+                costoAcumulado += kwhIntervalo * tarifaKwh;
+            }
+
+            document.getElementById('cronometro').textContent = formatearTiempo(segundosSimulados);
+            document.getElementById('costo-clp').textContent = '$' + costoAcumulado.toFixed(2);
+
+            const etiqueta = formatearTiempo(segundosSimulados);
+            chart.data.labels.push(etiqueta);
+            chart.data.datasets[0].data.push(wattsActivos);
+            if (chart.data.labels.length > 15) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update('none');
+        }, 1000);
+    </script>
 </body>
 </html>

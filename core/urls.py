@@ -8,4 +8,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='landing'), name='logout'),
     path('registro/', views.registro, name='registro'),
     path('app/', views.dashboard, name='dashboard'),
+    path('app/toggle/<int:dispositivo_id>/', views.toggle_dispositivo, name='toggle_dispositivo'),
+    path('app/eliminar/<int:dispositivo_id>/', views.eliminar_dispositivo, name='eliminar_dispositivo'),
 ]
