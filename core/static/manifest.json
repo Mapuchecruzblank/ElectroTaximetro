@@ -1,0 +1,16 @@
+{
+  "name": "ElectroTaximetro",
+  "short_name": "ElectroTax",
+  "start_url": "/login/",
+  "display": "standalone",
+  "background_color": "#090d0b",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
