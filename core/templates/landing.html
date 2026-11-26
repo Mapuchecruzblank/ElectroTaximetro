@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectroTaximetro | Control de Consumo Eléctrico</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+<meta name="theme-color" content="#22c55e">
 </head>
 <body>
     <div class="container">
@@ -39,5 +41,10 @@
             <p>Conecta una pinza amperimétrica no invasiva SCT-013 al tablero eléctrico para reemplazar la simulación por mediciones reales vía Wi-Fi.</p>
         </div>
     </div>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+</script>
 </body>
 </html>
