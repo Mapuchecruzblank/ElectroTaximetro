@@ -1,3 +1,15 @@
+:root {
+    color-scheme: dark;
+    --neon-green: #39ff14;
+    --page-background: #080a08;
+    --card-background: #111311;
+    --input-background: #1d1f1d;
+    --primary-text: #f3f7f1;
+    --secondary-text: #b6c0b3;
+    --muted-green: #9fbd98;
+    --subtle-border: #303630;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,8 +18,8 @@
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
-    background: #090d0b;
-    color: #f0fdf4;
+    background: var(--page-background);
+    color: var(--primary-text);
     line-height: 1.5;
 }
 
@@ -34,15 +46,17 @@ header {
 .logo {
     font-weight: 800;
     font-size: 1.2rem;
-    color: #22c55e;
+    color: var(--neon-green);
+    text-shadow: 0 0 12px rgb(57 255 20 / 45%);
 }
 
 .card {
-    background: #111915;
+    background: var(--card-background);
     padding: 20px;
-    border-radius: 14px;
+    border-radius: 16px;
     margin-bottom: 16px;
-    border: 1px solid #1f3328;
+    border: 1px solid rgb(57 255 20 / 24%);
+    box-shadow: 0 0 18px rgb(57 255 20 / 10%), inset 0 0 12px rgb(57 255 20 / 3%);
 }
 
 h1 {
@@ -53,26 +67,26 @@ h1 {
 
 h2 {
     font-size: 1.1rem;
-    color: #22c55e;
+    color: var(--neon-green);
     margin-bottom: 8px;
 }
 
 p {
-    color: #bbf7d0;
+    color: var(--secondary-text);
     font-size: 0.95rem;
     margin-bottom: 10px;
 }
 
 a {
-    color: #4ade80;
+    color: #9cff82;
     text-decoration: none;
     font-size: 0.9rem;
 }
 
 .btn {
     display: inline-block;
-    background: #22c55e;
-    color: #052e16;
+    background: var(--neon-green);
+    color: #071405;
     padding: 12px 18px;
     border-radius: 10px;
     font-weight: 700;
@@ -80,10 +94,14 @@ a {
     border: none;
     cursor: pointer;
     font-size: 0.95rem;
+    box-shadow: 0 0 12px rgb(57 255 20 / 42%);
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .btn:hover {
-    background: #4ade80;
+    background: #65ff47;
+    box-shadow: 0 0 20px rgb(57 255 20 / 68%);
+    transform: translateY(-1px);
 }
 
 .btn-sm {
@@ -114,7 +132,7 @@ form p {
 form label {
     display: block;
     font-size: 0.85rem;
-    color: #86efac;
+    color: var(--secondary-text);
     margin-bottom: 4px;
 }
 
@@ -122,21 +140,29 @@ form input {
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #263d30;
-    background: #090d0b;
-    color: #f0fdf4;
+    border: 1px solid var(--subtle-border);
+    background: var(--input-background);
+    color: var(--primary-text);
     font-size: 0.95rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 form input:focus {
     outline: none;
-    border-color: #22c55e;
+    border-color: var(--neon-green);
+    box-shadow: 0 0 0 2px rgb(57 255 20 / 15%), 0 0 12px rgb(57 255 20 / 20%);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--neon-green);
+    outline-offset: 3px;
 }
 
 .helptext, form ul {
     display: block;
     font-size: 0.78rem;
-    color: #86efac;
+    color: var(--muted-green);
     margin-top: 4px;
     padding-left: 16px;
 }
@@ -160,7 +186,8 @@ form input:focus {
 
 .taximetro-card {
     text-align: center;
-    border-color: #22c55e;
+    border-color: rgb(57 255 20 / 65%);
+    box-shadow: 0 0 24px rgb(57 255 20 / 17%), inset 0 0 18px rgb(57 255 20 / 5%);
 }
 
 .taximetro-label {
@@ -172,8 +199,9 @@ form input:focus {
 .taximetro-monto {
     font-size: 2.6rem;
     font-weight: 800;
-    color: #22c55e;
+    color: var(--neon-green);
     margin: 4px 0;
+    text-shadow: 0 0 16px rgb(57 255 20 / 55%);
 }
 
 .taximetro-stats {
@@ -191,13 +219,17 @@ form input:focus {
 }
 
 .btn-speed {
-    background: #1f3328;
-    color: #86efac;
+    background: #191d19;
+    color: #b8f5aa;
+    border: 1px solid rgb(57 255 20 / 28%);
+    box-shadow: none;
 }
 
 .btn-speed.active {
-    background: #22c55e;
-    color: #052e16;
+    background: var(--neon-green);
+    color: #071405;
+    border-color: var(--neon-green);
+    box-shadow: 0 0 12px rgb(57 255 20 / 42%);
 }
 
 .btn-reset {
@@ -223,17 +255,21 @@ form input:focus {
     margin: 0;
 }
 
+.form-add-device .btn-full {
+    flex-basis: 100%;
+}
+
 .device-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid #1f3328;
+    border-bottom: 1px solid rgb(57 255 20 / 18%);
 }
 
 .device-watts {
     font-size: 0.82rem;
-    color: #86efac;
+    color: var(--muted-green);
 }
 
 .device-actions {
@@ -251,7 +287,7 @@ form input:focus {
 }
 
 .btn-on {
-    background: #22c55e;
+    background: #39ff14;
     color: #052e16;
 }
 
@@ -262,5 +298,16 @@ form input:focus {
 
 .empty-msg {
     font-size: 0.88rem;
-    color: #86efac;
+    color: var(--muted-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
